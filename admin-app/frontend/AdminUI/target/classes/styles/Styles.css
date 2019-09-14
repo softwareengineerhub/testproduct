@@ -1,0 +1,7 @@
+#rootPane {
+    -fx-background-image: url("photo-1464306208223-e0b4495a5553.jpg");
+}
+#btn :hover{
+    -fx-background-color: #ffbd01;
+    -fx-background-radius: 50px;
+}
