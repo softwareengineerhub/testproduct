@@ -1,10 +1,9 @@
 package AdminUI.fxmlControllers;
 
-import AdminUI.business.User;
+import AdminUI.model.Users;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.input.MouseEvent;
@@ -15,7 +14,7 @@ import java.util.ResourceBundle;
 
 public class UserDetailsFXMLController implements Initializable {
 
-    private User user;
+    private Users user;
 
     @FXML
     private JFXTextField loginTextField;
@@ -45,7 +44,7 @@ public class UserDetailsFXMLController implements Initializable {
     void buttonSaveClicked(MouseEvent event) {
         //TODO: save command
         if (user == null) {
-            user = new User(loginTextField.getText(), emailTextField.getText(), passwordField.getText(), roleTextField.getText());
+            user = new Users(100, loginTextField.getText(), emailTextField.getText(), passwordField.getText(), roleTextField.getText());
         } else {
             user.setEmail(emailTextField.getText());
             user.setLogin(loginTextField.getText());
@@ -61,7 +60,7 @@ public class UserDetailsFXMLController implements Initializable {
 
     }
 
-    void initData(User user) {
+    void initData(Users user) {
         this.user = user;
         loginTextField.setText(user.getLogin());
         passwordField.setText(user.getPassword());

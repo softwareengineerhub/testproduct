@@ -1,7 +1,7 @@
 package AdminUI.fxmlControllers;
 
-import AdminUI.business.Question;
-import AdminUI.business.User;
+import AdminUI.model.Question;
+import AdminUI.model.Users;
 import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,7 +26,7 @@ import java.util.ResourceBundle;
 
 public class AdminFXMLController implements Initializable {
 
-    private ObservableList<User> usersData = FXCollections.observableArrayList();
+    private ObservableList<Users> usersData = FXCollections.observableArrayList();
     private ObservableList<Question> questionsData = FXCollections.observableArrayList();
 
     @FXML
@@ -51,22 +51,22 @@ public class AdminFXMLController implements Initializable {
     private AnchorPane questionsPane;
 
     @FXML
-    private TableView<User> usersTable;
+    private TableView<Users> usersTable;
 
     @FXML
-    private TableColumn<User, Integer> idColumn;
+    private TableColumn<Users, Integer> idColumn;
 
     @FXML
-    private TableColumn<User, String> loginColumn;
+    private TableColumn<Users, String> loginColumn;
 
     @FXML
-    private TableColumn<User, String> passwordColumn;
+    private TableColumn<Users, String> passwordColumn;
 
     @FXML
-    private TableColumn<User, String> emailColumn;
+    private TableColumn<Users, String> emailColumn;
 
     @FXML
-    private TableColumn<User, String> roleColumn;
+    private TableColumn<Users, String> roleColumn;
 
     @FXML
     private TableView<Question> questionsTable;
@@ -96,6 +96,57 @@ public class AdminFXMLController implements Initializable {
     private TableColumn<Question, String> authorColumnQuestion;
 
     @FXML
+    private JFXButton buttonAddQuestion;
+
+    @FXML
+    private JFXButton buttonEditQuestion;
+
+    @FXML
+    private JFXButton buttonRemoveQuestion;
+
+    @FXML
+    void buttonAddQuestionClicked(MouseEvent event) {
+        //TODO: add Question command
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/fxml/QuestionDetailsScene.fxml"));
+
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void buttonRemoveQuestionClicked(MouseEvent event) {
+        //TODO: remove Question command
+        Question question = questionsTable.getSelectionModel().getSelectedItem();
+        questionsData.remove(question);
+    }
+
+    @FXML
+    void buttonEditQuestionClicked(MouseEvent event) {
+        //TODO: update Question command
+        Question question = questionsTable.getSelectionModel().getSelectedItem();
+        if (question != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/QuestionDetailsScene.fxml"));
+                Stage stage = new Stage(StageStyle.DECORATED);
+                stage.setScene(new Scene((Pane) loader.load()));
+
+                QuestionDetailsFXMLController controller = loader.<QuestionDetailsFXMLController>getController();
+                controller.initData(question);
+
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @FXML
     void buttonAddUserClicked(MouseEvent event) {
         //TODO: add command
         try {
@@ -113,14 +164,14 @@ public class AdminFXMLController implements Initializable {
     @FXML
     void buttonRemoveUserClicked(MouseEvent event) {
         //TODO: remove command
-        User user = usersTable.getSelectionModel().getSelectedItem();
+        Users user = usersTable.getSelectionModel().getSelectedItem();
         usersData.remove(user);
     }
 
     @FXML
     void buttonEditUserClicked(MouseEvent event) {
         //TODO: update command
-        User user = usersTable.getSelectionModel().getSelectedItem();
+        Users user = usersTable.getSelectionModel().getSelectedItem();
         if (user != null) {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/UserDetailsScene.fxml"));
@@ -162,23 +213,23 @@ public class AdminFXMLController implements Initializable {
     private void initData() {
         //TODO: get all data from DB
 
-        usersData.add(new User(1, "Alex", "alex@mail.com", "qwerty", "admin"));
-        usersData.add(new User(2, "Bob", "bob@mail.com","dsfsdfw",  "user"));
-        usersData.add(new User(3, "Jeck", "Jeck@mail.com", "dsfdsfwe", "user"));
-        usersData.add(new User(4, "Mike", "mike@mail.com","iueern",  "user"));
-        usersData.add(new User(5, "colin", "colin@mail.com","woeirn",  "user"));
+        usersData.add(new Users(1, "Alex",  "qwerty", "alex@mail.com","admin"));
+        usersData.add(new Users(2, "Bob", "dsfsdfw",  "bob@mail.com","user"));
+        usersData.add(new Users(3, "Jeck", "dsfdsfwe", "Jeck@mail.com", "user"));
+        usersData.add(new Users(4, "Mike", "iueern",  "mike@mail.com","user"));
+        usersData.add(new Users(5, "colin", "woeirn",  "colin@mail.com","user"));
 
-        questionsData.add(new Question(1, "в каком году появился язык программирования java?", "1992", "1993", "1994", "1995", "1995", usersData.get(0)));
-        questionsData.add(new Question(2, "в каком году появился язык программирования C Sharp?", "2001", "2002", "2000", "2003", "2000", usersData.get(1)));
+        questionsData.add(new Question(1, "в каком году появился язык программирования java?", "1992", "1993", "1994", "1995", "1995", usersData.get(0).getId()));
+        questionsData.add(new Question(2, "в каком году появился язык программирования C Sharp?", "2001", "2002", "2000", "2003", "2000", usersData.get(1).getId()));
     }
 
     private void initializeUsersTable() {
 
-        idColumn.setCellValueFactory(new PropertyValueFactory<User, Integer>("id"));
-        loginColumn.setCellValueFactory(new PropertyValueFactory<User, String>("login"));
-        passwordColumn.setCellValueFactory(new PropertyValueFactory<User, String>("password"));
-        emailColumn.setCellValueFactory(new PropertyValueFactory<User, String>("email"));
-        roleColumn.setCellValueFactory(new PropertyValueFactory<User, String>("role"));
+        idColumn.setCellValueFactory(new PropertyValueFactory<Users, Integer>("id"));
+        loginColumn.setCellValueFactory(new PropertyValueFactory<Users, String>("login"));
+        passwordColumn.setCellValueFactory(new PropertyValueFactory<Users, String>("password"));
+        emailColumn.setCellValueFactory(new PropertyValueFactory<Users, String>("email"));
+        roleColumn.setCellValueFactory(new PropertyValueFactory<Users, String>("role"));
 
         usersTable.setItems(usersData);
 

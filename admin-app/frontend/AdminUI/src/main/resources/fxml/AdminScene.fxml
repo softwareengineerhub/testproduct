@@ -138,7 +138,38 @@
             </AnchorPane>
             <AnchorPane fx:id="questionsPane" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <TableView fx:id="questionsTable" prefHeight="400.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox prefHeight="68.0" prefWidth="400.0">
+                     <children>
+                        <ImageView fitHeight="30.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                        <HBox prefHeight="50.0" prefWidth="400.0">
+                           <children>
+                              <AnchorPane prefHeight="33.0" prefWidth="33.0" />
+                              <JFXButton fx:id="buttonAddQuestion" buttonType="RAISED" onMouseClicked="#buttonAddQuestionClicked" prefHeight="32.0" prefWidth="119.0" style="-fx-background-color: #00A2D3;" text="Add" textFill="WHITE">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </JFXButton>
+                              <AnchorPane prefHeight="33.0" prefWidth="33.0" />
+                              <JFXButton fx:id="buttonEditQuestion" buttonType="RAISED" onMouseClicked="#buttonEditQuestionClicked" prefHeight="32.0" prefWidth="71.0" style="-fx-background-color: #00A2D3;" text="Edit" textFill="WHITE">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </JFXButton>
+                              <AnchorPane prefHeight="33.0" prefWidth="33.0" />
+                              <JFXButton fx:id="buttonRemoveQuestion" buttonType="RAISED" onMouseClicked="#buttonRemoveQuestionClicked" prefHeight="32.0" prefWidth="114.0" style="-fx-background-color: #00A2D3;" text="Remove" textFill="WHITE">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                                 <effect>
+                                    <Shadow />
+                                 </effect>
+                              </JFXButton>
+                              <ImageView fitHeight="32.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <TableView fx:id="questionsTable" layoutY="68.0" prefHeight="332.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="68.0">
                     <columns>
                       <TableColumn fx:id="questionColumnQuestion" prefWidth="75.0" text="Question" />
                         <TableColumn fx:id="a1ColumnQuestion" prefWidth="75.0" text="a1" />
@@ -149,6 +180,9 @@
                         <TableColumn fx:id="authorColumnQuestion" prefWidth="75.0" text="author" />
                       <TableColumn fx:id="idColumnQuestion" prefWidth="75.0" text="ID" />
                     </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
                   </TableView>
                </children>
             </AnchorPane>
