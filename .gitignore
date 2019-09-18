@@ -1,0 +1,13 @@
+/admin-app/soap-api/.idea
+/admin-app/soap-api/target
+/admin-app/soap-api/dependency-reduced-pom.xml
+/admin-app/soap-api/webservice-api.iml
+/admin-app/dao/mydao/target
+/admin-app/dao/mydao/.idea
+/admin-app/dao/mydao/testproduct.iml
+/admin-app/dao/mydao/dependency-reduced-pom.xml
+/admin-app/frontend/AdminUI/logs
+/admin-app/frontend/AdminUI/.idea
+/admin-app/frontend/AdminUI/AdminUI.iml
+/admin-app/frontend/AdminUI/target
+/admin-app/frontend/AdminUI/tmp
