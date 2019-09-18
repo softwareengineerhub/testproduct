@@ -27,7 +27,7 @@ public class DaoAPI {
     }
 
     public void updateUsersByUsername(Users user){
-        dao.addUser(user);
+        dao.updateUsersByUsername(user);
     }
 
     public void deleteUserByLogin(String login){
