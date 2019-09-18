@@ -1,7 +1,7 @@
 package AdminUI.fxmlControllers;
 
 import AdminUI.model.Question;
-import AdminUI.model.Users;
+import com.app.ws.api.Users;
 import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,14 +19,18 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.soap.client.SoapService;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class AdminFXMLController implements Initializable {
 
-    private ObservableList<Users> usersData = FXCollections.observableArrayList();
+    private SoapService soapService = new SoapService();
+
+    public static ObservableList<Users> usersData = FXCollections.observableArrayList();
     private ObservableList<Question> questionsData = FXCollections.observableArrayList();
 
     @FXML
@@ -165,7 +169,10 @@ public class AdminFXMLController implements Initializable {
     void buttonRemoveUserClicked(MouseEvent event) {
         //TODO: remove command
         Users user = usersTable.getSelectionModel().getSelectedItem();
-        usersData.remove(user);
+
+        //usersData.remove(user);
+        soapService.remove(user);
+        updateData();
     }
 
     @FXML
@@ -180,6 +187,7 @@ public class AdminFXMLController implements Initializable {
 
                 UserDetailsFXMLController controller = loader.<UserDetailsFXMLController>getController();
                 controller.initData(user);
+
 
                 stage.show();
             } catch (IOException e) {
@@ -211,8 +219,11 @@ public class AdminFXMLController implements Initializable {
     }
 
     private void initData() {
+        List<Users> users =  soapService.readAllUsers();
+        usersData.clear();
+        usersData.addAll(users);
         //TODO: get all data from DB
-
+/*
         usersData.add(new Users(1, "Alex",  "qwerty", "alex@mail.com","admin"));
         usersData.add(new Users(2, "Bob", "dsfsdfw",  "bob@mail.com","user"));
         usersData.add(new Users(3, "Jeck", "dsfdsfwe", "Jeck@mail.com", "user"));
@@ -220,7 +231,7 @@ public class AdminFXMLController implements Initializable {
         usersData.add(new Users(5, "colin", "woeirn",  "colin@mail.com","user"));
 
         questionsData.add(new Question(1, "в каком году появился язык программирования java?", "1992", "1993", "1994", "1995", "1995", usersData.get(0).getId()));
-        questionsData.add(new Question(2, "в каком году появился язык программирования C Sharp?", "2001", "2002", "2000", "2003", "2000", usersData.get(1).getId()));
+        questionsData.add(new Question(2, "в каком году появился язык программирования C Sharp?", "2001", "2002", "2000", "2003", "2000", usersData.get(1).getId()));*/
     }
 
     private void initializeUsersTable() {
@@ -247,5 +258,11 @@ public class AdminFXMLController implements Initializable {
 
         questionsTable.setItems(questionsData);
 
+    }
+
+    private void updateData() {
+        List<Users> users= soapService.readAllUsers();
+        AdminFXMLController.usersData.clear();
+        AdminFXMLController.usersData.addAll(users);
     }
 }
