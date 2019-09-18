@@ -44,8 +44,10 @@ public class UserDetailsFXMLController implements Initializable {
     void buttonSaveClicked(MouseEvent event) {
         //TODO: save command
         if (user == null) {
+            //TODO: здесь вызов метода "add"
             user = new Users(100, loginTextField.getText(), emailTextField.getText(), passwordField.getText(), roleTextField.getText());
         } else {
+            //TODO: здесь вызов метода "update"
             user.setEmail(emailTextField.getText());
             user.setLogin(loginTextField.getText());
             user.setPassword(passwordField.getText());
