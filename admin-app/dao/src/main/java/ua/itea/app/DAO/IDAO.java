@@ -1,11 +1,11 @@
-package ua.itea.app.dao;
+package ua.itea.app.DAO;
 
 import ua.itea.app.model.Question;
 import ua.itea.app.model.Users;
 
 import java.util.List;
 
-public interface Dao {
+public interface IDAO {
 
     public void addUser(Users user);
 

@@ -1,4 +1,4 @@
-package ua.itea.app.dao;
+package ua.itea.app.DAO;
 
 import ua.itea.app.model.Question;
 import ua.itea.app.model.Users;
@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DaoImpl implements Dao {
+public class DaoImpl implements IDAO {
 
     @Override
     public void addUser(Users user) {
