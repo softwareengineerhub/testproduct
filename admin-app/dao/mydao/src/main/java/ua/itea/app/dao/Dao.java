@@ -11,19 +11,19 @@ public interface Dao {
 
     public List<Users> readAllUsers();
 
-    public void updateUsersById(Users user);
+    public void updateUsersByUsername(Users user);
 
-    public void deleteById(int id);
+    public void deleteUserByLogin(String login);
 
     public boolean authentication(String login, String password);
 
-    public String roleOfUser(int id);
+    public String roleOfUser(String login);
 
-    public void addQuestion(Question question);
+    public void addQuestion(Question question, String userLogin);
 
     public List<Question> readAllQuestions();
 
     public void updateQuestion(Question q);
 
-    public void deleteQuestionById(int id);
+    //public void deleteQuestionById(int id);
 }

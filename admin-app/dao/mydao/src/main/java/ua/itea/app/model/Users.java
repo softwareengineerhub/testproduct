@@ -6,7 +6,6 @@ import java.util.regex.Pattern;
 
 public class Users {
 
-   private int id;
    private String login;
    private String password;
    private String email;
@@ -22,24 +21,16 @@ public class Users {
 
     }
 
-    public Users(int id, String login, String password, String email, String role) {
-        this.id = id;
+    public Users(String login, String password, String email, String role) {
         this.login = login;
         this.password = password;
-        if (checkEmail(email)==true) {
+        this.email=email;
+        /*if (checkEmail(email)) {
             this.email = email;
         }else{
             System.out.println("Wrong email");
-        }
+        }*/
         this.role = role;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getLogin() {
@@ -81,7 +72,6 @@ public class Users {
     @Override
     public String toString() {
         return "Users{" +
-                "id=" + id +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
@@ -94,7 +84,7 @@ public class Users {
         if (this == o) return true;
         if (!(o instanceof Users)) return false;
         Users users = (Users) o;
-        return getId() == users.getId() &&
+        return
                 Objects.equals(getLogin(), users.getLogin()) &&
                 Objects.equals(getPassword(), users.getPassword()) &&
                 Objects.equals(getEmail(), users.getEmail()) &&
@@ -103,6 +93,6 @@ public class Users {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getLogin(), getPassword(), getEmail(), getRole());
+        return Objects.hash(getLogin(), getPassword(), getEmail(), getRole());
     }
 }

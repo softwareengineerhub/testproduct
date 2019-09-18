@@ -19,7 +19,7 @@ public class DaoImpl implements Dao {
             ps.setObject(4, user.getRole());
             ps.execute();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -34,7 +34,6 @@ public class DaoImpl implements Dao {
             Users user =  null;
             while(rs.next()){
                 user = new Users();
-                user.setId(rs.getInt("id"));
                 user.setEmail(rs.getString("email"));
                 user.setLogin(rs.getString("login"));
                 user.setPassword(rs.getString("password"));
@@ -49,15 +48,15 @@ public class DaoImpl implements Dao {
     }
 
     @Override
-    public void updateUsersById(Users user) {
+    public void updateUsersByUsername(Users user) {
         try(Connection c = getConnection()){
-            PreparedStatement ps = c.prepareStatement("UPDATE users SET login=?, email=?, role=?, password=? WHERE id=?");
+            PreparedStatement ps = c.prepareStatement("UPDATE users SET login=?, email=?, role=?, password=? WHERE login=?");
             int i=0;
             ps.setString(++i, user.getLogin());
             ps.setString(++i, user.getEmail());
             ps.setString(++i, user.getRole());
             ps.setString(++i, user.getPassword());
-            ps.setInt(++i, user.getId());
+            ps.setString(++i, user.getLogin());
             ps.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -65,11 +64,11 @@ public class DaoImpl implements Dao {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteUserByLogin(String login) {
 
         try(Connection c = getConnection()){
-            PreparedStatement ps = c.prepareStatement("DELETE FROM users WHERE id=?");
-            ps.setInt(1, id);
+            PreparedStatement ps = c.prepareStatement("DELETE FROM users WHERE login=?");
+            ps.setString(1, login);
             ps.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -80,20 +79,13 @@ public class DaoImpl implements Dao {
     public boolean authentication(String login, String password) {
         boolean check = false;
         try(Connection c = getConnection()){
-            PreparedStatement ps = c.prepareStatement("SELECT login, password FROM users");
+            PreparedStatement ps = c.prepareStatement("SELECT count(*) FROM users WHERE login=? and password=?");
+            ps.setObject(1, login);
+            ps.setObject(2, password);
             ResultSet rs = ps.executeQuery();
-            System.out.println("sql m here");
-            while(rs.next()){
-                if (login.equals(rs.getString("login"))){
-                    if(password.equals(rs.getString("password"))){
-                        check = true;
-                    } else {
-                        check = false;
-                    }
-                } else {
-                    check = false;
-                }
-            }
+            rs.next();
+            int count = rs.getInt(1);
+            check = count==1;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -101,11 +93,11 @@ public class DaoImpl implements Dao {
     }
 
     @Override
-    public String roleOfUser(int id) {
+    public String roleOfUser(String login) {
         String role = "";
         try(Connection c = getConnection()){
-            PreparedStatement ps = c.prepareStatement("SELECT role FROM users WHERE id=?");
-            ps.setInt(1, id);
+            PreparedStatement ps = c.prepareStatement("SELECT role FROM users WHERE login=?");
+            ps.setString(1, login);
 
             ResultSet rs = ps.executeQuery();
             Users user =  null;
@@ -120,16 +112,17 @@ public class DaoImpl implements Dao {
     }
 
     @Override
-    public void addQuestion(Question question) {
+    public void addQuestion(Question question, String login) {
         try (Connection c = getConnection()){
-            PreparedStatement ps = c.prepareStatement("INSERT INTO questions(question, a1, a2, a3, a4, correct, author_id) VALUES(?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement ps =
+                    c.prepareStatement("INSERT INTO questions(question, a1, a2, a3, a4, correct, author_id) VALUES(?, ?, ?, ?, ?, ?, (SELECT id from users WHERE login=?))");
             ps.setString(1, question.getQuestion());
             ps.setString(2, question.getA1());
             ps.setString(3, question.getA2());
             ps.setString(4, question.getA3());
             ps.setString(5, question.getA4());
             ps.setString(6, question.getCorrect());
-            ps.setInt(7, question.getAuthor_id());
+            ps.setString(7, login);
             ps.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -147,14 +140,12 @@ public class DaoImpl implements Dao {
             Question q;
             while(rs.next()){
                 q = new Question();
-                q.setId(rs.getInt("id"));
                 q.setQuestion(rs.getString("question"));
                 q.setA1(rs.getString("a1"));
                 q.setA2(rs.getString("a2"));
                 q.setA3(rs.getString("a3"));
                 q.setA4(rs.getString("a4"));
                 q.setCorrect(rs.getString("correct"));
-                q.setAuthor_id(rs.getInt("author_id"));
                 qList.add(q);
 
             }
@@ -175,15 +166,14 @@ public class DaoImpl implements Dao {
             ps.setString(++i,q.getA3() );
             ps.setString(++i, q.getA4());
             ps.setString(++i, q.getCorrect());
-            ps.setInt(++i, q.getAuthor_id());
-            ps.setInt(++i, q.getId());
+
             ps.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    @Override
+    /*@Override
     public void deleteQuestionById(int id) {
         try(Connection c = getConnection()){
             PreparedStatement ps = c.prepareStatement("DELETE FROM questions WHERE id=?");
@@ -192,9 +182,12 @@ public class DaoImpl implements Dao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/testproduct", "root", "ltvzirf1995");
+        String url = System.getProperty("db.url", "jdbc:mysql://127.0.0.1:3306/testproduct");
+        String user = System.getProperty("db.user", "root");
+        String password = System.getProperty("db.password", "11111111");
+        return DriverManager.getConnection(url, user, password);
     }
 }

@@ -3,36 +3,25 @@ package ua.itea.app.model;
 import java.util.Objects;
 
 public class Question {
-    private int id;
+
     private String question;
     private String a1;
     private String a2;
     private String a3;
     private String a4;
     private String correct;
-    private int author_id;
 
     public Question(){
 
     }
 
-    public Question(int id, String question, String a1, String a2, String a3, String a4, String correct, int author_id) {
-        this.id = id;
+    public Question(String question, String a1, String a2, String a3, String a4, String correct, int author_id) {
         this.question = question;
         this.a1 = a1;
         this.a2 = a2;
         this.a3 = a3;
         this.a4 = a4;
         this.correct = correct;
-        this.author_id = author_id;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getQuestion() {
@@ -83,26 +72,16 @@ public class Question {
         this.correct = correct;
     }
 
-    public int getAuthor_id() {
-        return author_id;
-    }
-
-    public void setAuthor_id(int author_id) {
-        this.author_id = author_id;
-    }
-
-
     @Override
     public String toString() {
         return "Question{" +
-                "id=" + id +
+
                 ", question='" + question + '\'' +
                 ", a1='" + a1 + '\'' +
                 ", a2='" + a2 + '\'' +
                 ", a3='" + a3 + '\'' +
                 ", a4='" + a4 + '\'' +
                 ", correct='" + correct + '\'' +
-                ", author_id=" + author_id +
                 '}';
     }
 
@@ -111,8 +90,8 @@ public class Question {
         if (this == o) return true;
         if (!(o instanceof Question)) return false;
         Question question1 = (Question) o;
-        return getId() == question1.getId() &&
-                getAuthor_id() == question1.getAuthor_id() &&
+        return
+
                 Objects.equals(getQuestion(), question1.getQuestion()) &&
                 Objects.equals(getA1(), question1.getA1()) &&
                 Objects.equals(getA2(), question1.getA2()) &&
@@ -123,6 +102,6 @@ public class Question {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getQuestion(), getA1(), getA2(), getA3(), getA4(), getCorrect(), getAuthor_id());
+        return Objects.hash(getQuestion(), getA1(), getA2(), getA3(), getA4(), getCorrect());
     }
 }
