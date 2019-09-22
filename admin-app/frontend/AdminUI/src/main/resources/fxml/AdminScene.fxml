@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminUI.fxmlControllers.AdminFXMLController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminUI.fxmlControllers.AdminFXMLController">
    <children>
       <VBox prefHeight="400.0" prefWidth="200.0" style="-fx-background-color: #333645;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -28,6 +28,7 @@
                   <Font name="Ebrima" size="21.0" />
                </font>
             </Label>
+            <JFXButton fx:id="refreshButton" buttonType="RAISED" onAction="#refreshList" style="-fx-background-color: grey; -fx-background-radius: 20;" text="Refresh" textAlignment="CENTER" textFill="#00ff07" underline="true" wrapText="true" />
             <HBox focusTraversable="true" prefHeight="32.0" prefWidth="202.0">
                <children>
                   <ImageView fitHeight="32.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">

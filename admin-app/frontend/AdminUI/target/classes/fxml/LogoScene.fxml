@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="rootPane" prefHeight="600.0" prefWidth="400.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminUI.fxmlControllers.LogoFXMLController">
+<AnchorPane id="rootPane" prefHeight="600.0" prefWidth="400.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdminUI.fxmlControllers.LogoFXMLController">
    <children>
       <Pane layoutX="66.0" layoutY="95.0" prefHeight="405.0" prefWidth="286.0" style="-fx-background-color: #ffff; -fx-background-radius: 60px;">
          <effect>
@@ -41,8 +41,8 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <JFXPasswordField focusColor="#52a83f" labelFloat="true" promptText="password" unFocusColor="#52a83f" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <JFXTextField focusColor="#52a83f" labelFloat="true" promptText="username" unFocusColor="#52a83f" GridPane.columnIndex="1" />
+                  <JFXPasswordField fx:id="passField" focusColor="#52a83f" labelFloat="true" promptText="password" unFocusColor="#52a83f" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <JFXTextField fx:id="loginField" focusColor="#52a83f" labelFloat="true" promptText="username" unFocusColor="#52a83f" GridPane.columnIndex="1" />
                   <ImageView fitHeight="23.0" fitWidth="21.0" opacity="0.07" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../styles/email_black.png" />
@@ -57,6 +57,7 @@
             </GridPane>
             <JFXButton id="btn" fx:id="confirmButton" buttonType="RAISED" layoutX="58.0" layoutY="299.0" onMouseClicked="#confirmButtonClick" prefHeight="35.0" prefWidth="76.0" style="-fx-background-color: #04c994; -fx-background-radius: 30px;" text="LOGIN" />
             <JFXButton id="btn" buttonType="RAISED" layoutX="160.0" layoutY="299.0" prefHeight="35.0" prefWidth="76.0" ripplerFill="BLACK" style="-fx-background-color: #04c994; -fx-background-radius: 30px;" text="SIGNUP" />
+            <Label fx:id="infoLabel" layoutX="79.0" layoutY="262.0" prefHeight="21.0" prefWidth="187.0" />
          </children>
       </Pane>
    </children>

@@ -1,0 +1,4 @@
+AdminUI\MainApp.class
+AdminUI\fxmlControllers\LogoFXMLController.class
+AdminUI\fxmlControllers\AdminFXMLController.class
+AdminUI\fxmlControllers\UserDetailsFXMLController.class

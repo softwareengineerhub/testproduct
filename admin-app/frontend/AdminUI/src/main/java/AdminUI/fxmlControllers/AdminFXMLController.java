@@ -1,10 +1,12 @@
 package AdminUI.fxmlControllers;
 
-import AdminUI.business.Question;
-import AdminUI.business.User;
+
+import com.app.*;
 import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -19,14 +21,17 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import ua.itea.app.model.Question;
+import ua.itea.app.model.Users;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class AdminFXMLController implements Initializable {
 
-    private ObservableList<User> usersData = FXCollections.observableArrayList();
+    private ObservableList<Users> usersData = FXCollections.observableArrayList();
     private ObservableList<Question> questionsData = FXCollections.observableArrayList();
 
     @FXML
@@ -51,22 +56,22 @@ public class AdminFXMLController implements Initializable {
     private AnchorPane questionsPane;
 
     @FXML
-    private TableView<User> usersTable;
+    private TableView<Users> usersTable;
 
     @FXML
-    private TableColumn<User, Integer> idColumn;
+    private TableColumn<Users, Integer> idColumn;
 
     @FXML
-    private TableColumn<User, String> loginColumn;
+    private TableColumn<Users, String> loginColumn;
 
     @FXML
-    private TableColumn<User, String> passwordColumn;
+    private TableColumn<Users, String> passwordColumn;
 
     @FXML
-    private TableColumn<User, String> emailColumn;
+    private TableColumn<Users, String> emailColumn;
 
     @FXML
-    private TableColumn<User, String> roleColumn;
+    private TableColumn<Users, String> roleColumn;
 
     @FXML
     private TableView<Question> questionsTable;
@@ -95,6 +100,12 @@ public class AdminFXMLController implements Initializable {
     @FXML
     private TableColumn<Question, String> authorColumnQuestion;
 
+    DaoImplService daoImplService=new DaoImplService();
+    DaoImpl dao=daoImplService.getDaoImplPort();
+
+    @FXML
+    private JFXButton refreshButton;
+
     @FXML
     void buttonAddUserClicked(MouseEvent event) {
         //TODO: add command
@@ -113,14 +124,17 @@ public class AdminFXMLController implements Initializable {
     @FXML
     void buttonRemoveUserClicked(MouseEvent event) {
         //TODO: remove command
-        User user = usersTable.getSelectionModel().getSelectedItem();
+        Users user = usersTable.getSelectionModel().getSelectedItem();
         usersData.remove(user);
+        dao.deleteById(user.getId());
+        System.out.println("deleted");
+
     }
 
     @FXML
     void buttonEditUserClicked(MouseEvent event) {
         //TODO: update command
-        User user = usersTable.getSelectionModel().getSelectedItem();
+        Users user = usersTable.getSelectionModel().getSelectedItem();
         if (user != null) {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/UserDetailsScene.fxml"));
@@ -162,23 +176,39 @@ public class AdminFXMLController implements Initializable {
     private void initData() {
         //TODO: get all data from DB
 
-        usersData.add(new User(1, "Alex", "alex@mail.com", "qwerty", "admin"));
-        usersData.add(new User(2, "Bob", "bob@mail.com","dsfsdfw",  "user"));
-        usersData.add(new User(3, "Jeck", "Jeck@mail.com", "dsfdsfwe", "user"));
-        usersData.add(new User(4, "Mike", "mike@mail.com","iueern",  "user"));
-        usersData.add(new User(5, "colin", "colin@mail.com","woeirn",  "user"));
 
-        questionsData.add(new Question(1, "в каком году появился язык программирования java?", "1992", "1993", "1994", "1995", "1995", usersData.get(0)));
-        questionsData.add(new Question(2, "в каком году появился язык программирования C Sharp?", "2001", "2002", "2000", "2003", "2000", usersData.get(1)));
+
+
+        List<Users> userList = dao.readAllUsers();
+
+        for (Users u : userList) {
+            usersData.add(u);
+        }
+
+
+
+        List<Question> qList = dao.readAllQuestions();
+        for (Question q : qList) {
+            questionsData.add(q);
+        }
+
+//        usersData.add(new User(1, "Alex", "alex@mail.com", "qwerty", "admin"));
+//        usersData.add(new User(2, "Bob", "bob@mail.com","dsfsdfw",  "user"));
+//        usersData.add(new User(3, "Jeck", "Jeck@mail.com", "dsfdsfwe", "user"));
+//        usersData.add(new User(4, "Mike", "mike@mail.com","iueern",  "user"));
+//        usersData.add(new User(5, "colin", "colin@mail.com","woeirn",  "user"));
+//
+//        questionsData.add(new Question(1, "в каком году появился язык программирования java?", "1992", "1993", "1994", "1995", "1995", usersData.get(0)));
+//        questionsData.add(new Question(2, "в каком году появился язык программирования C Sharp?", "2001", "2002", "2000", "2003", "2000", usersData.get(1)));
     }
 
     private void initializeUsersTable() {
 
-        idColumn.setCellValueFactory(new PropertyValueFactory<User, Integer>("id"));
-        loginColumn.setCellValueFactory(new PropertyValueFactory<User, String>("login"));
-        passwordColumn.setCellValueFactory(new PropertyValueFactory<User, String>("password"));
-        emailColumn.setCellValueFactory(new PropertyValueFactory<User, String>("email"));
-        roleColumn.setCellValueFactory(new PropertyValueFactory<User, String>("role"));
+        idColumn.setCellValueFactory(new PropertyValueFactory<Users, Integer>("id"));
+        loginColumn.setCellValueFactory(new PropertyValueFactory<Users, String>("login"));
+        passwordColumn.setCellValueFactory(new PropertyValueFactory<Users, String>("password"));
+        emailColumn.setCellValueFactory(new PropertyValueFactory<Users, String>("email"));
+        roleColumn.setCellValueFactory(new PropertyValueFactory<Users, String>("role"));
 
         usersTable.setItems(usersData);
 
@@ -195,6 +225,19 @@ public class AdminFXMLController implements Initializable {
         correctColumnQuestion.setCellValueFactory(new PropertyValueFactory<Question, String>("correct"));
 
         questionsTable.setItems(questionsData);
+
+    }
+
+    @FXML
+    void refreshList(ActionEvent event) {
+        refreshButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                usersData.clear();
+                questionsData.clear();
+                initData();
+            }
+        });
 
     }
 }
